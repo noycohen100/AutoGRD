@@ -1,0 +1,41 @@
+
+
+def CreateClassifications(path,dataSet_name, output_path ):
+    """Gets a dataset, and uses random forest to classify the instances. 
+       Then, each instance is associated with some leaf. 
+       These associations are written to file, which its location is output_path.
+
+    Parameters
+    ----------
+    path : str
+        The file location of the dataset(csv file)
+    dataSet_name : str
+        The dataset name
+    output_path : str
+        Path to the output file(txt file)
+        
+
+    Returns
+    -------
+    list
+        a list of strings used that are the header columns
+    """
+    df = pd.read_csv(path, header=None)
+    df = df.dropna(axis=1, how='all')
+    features = df.columns[0: len(df.columns) -1]
+    X = df[features] 
+    target_col = df.columns[len(df.columns) -1]
+    Y = df[target_col]
+    X = PreProcessing(X)
+
+    
+    clf = RandomForestClassifier(max_depth=8, random_state=0, n_estimators=500)
+     clf.fit(X, Y)
+    # For regression datasets, one sholud use RandomForestRegressor instead of RandomForestClassifier
+    # from sklearn.ensemble import RandomForestRegressor
+    # clf = RandomForestRegressor(max_depth=8, random_state=0, n_estimators=500)
+    result = clf.apply(X)
+    result = result.transpose()
+    result = pd.DataFrame(result)
+    
+    result.to_csv(output_path, index=False, header=False)
