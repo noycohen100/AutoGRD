@@ -1,4 +1,19 @@
+   
 def OperateOrca(path_from, path_to_ndump2):
+    """
+    This function call to the orca algorithm
+
+    Parameters
+    ----------
+    tree : str
+        string which describes the instances' distribution in some tress
+    tree_number : int
+       
+    Returns
+    -------
+    list
+         list of pairs : <key =  tree number + leaf number , value = instance number>
+    """
     dir = os.listdir(folder_from)
 
     for file in dir:
