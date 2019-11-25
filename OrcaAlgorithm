@@ -1,26 +1,16 @@
    
 def OperateOrca(path_from, path_to_ndump2):
     """
-    This function call to the orca algorithm
+    This function call to the orca algorithm. The workspace director must contain the orca.exe file.
 
     Parameters
     ----------
-    tree : str
-        string which describes the instances' distribution in some tress
-    tree_number : int
-       
-    Returns
-    -------
-    list
-         list of pairs : <key =  tree number + leaf number , value = instance number>
+    path_from : str
+        path to the location of the file that contain the structure of the graph, the filename extension should be .in 
+    path_to_ndump2 : str
+         path to the location of the file, where the results of the orca algorithm will be saved. The filename extenstion of the 
+         output file will be .ndump2
     """
-    dir = os.listdir(folder_from)
-
-    for file in dir:
-        name_without_end = file.replace(".in" ,"")
-        if name_without_end +".ndump2" in os.listdir(ndump2_folder):
-            continue
-        print(name_without_end)
-        print("orca.exe node 4 " + file   + ndump2_folder + '/' + name_without_end +".ndump2")
-        subprocess.call("orca.exe node 4 "+ path_from + ' '+ path_to_ndump2+".ndump2")
+    
+    subprocess.call("orca.exe node 4 "+ path_from + ' '+ path_to_ndump2+".ndump2")
      
