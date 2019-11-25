@@ -2,7 +2,7 @@
 def OperateOrca(path_from, path_to_ndump2):
     """
     This function call to the orca algorithm. The workspace director must contain the orca.exe file.
-     Orca is availiable at http://www.biolab.si/supp/orca/.
+    The implementation of Orca is availiable at http://www.biolab.si/supp/orca/.
 
     Parameters
     ----------
