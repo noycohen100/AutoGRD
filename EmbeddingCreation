@@ -3,6 +3,7 @@
 """		
 	Purpose of the script:
 	----------------------
+	The script is taken from http://www0.cs.ucl.ac.uk/staff/natasa/GCD/ and we inserted some changes.
 	The code for computing alignment-free network distances between a set of network given in 
 	a folder. 
 	
@@ -19,7 +20,9 @@
 		7) Average Clustering Coefficient Distance
 		8) Diameter Distances of the network
 	
-	The script outputs the computed distances between all pairs of networks in CSV format
+	The script outputs the computed distances between all pairs of networks in CSV format.
+	The relevant function for creating the embedding representation is the function main, with distType ='gcd15'.
+	Finally, the embedding matrix will be in the location of the output file(the argument to_path in the main function)
 		
 	Notes on using the script:
 	--------------------------
@@ -268,7 +271,7 @@ def saveDistanceMatrix(matrix, networkNames, outputFile):
 	fWrite.close()
 
 # The function to compute all the distances between the provided correlation matrices in parallel
-def computeCorrelDist(corrMats, outputName, from_folder, to_folder):
+def computeCorrelDist(corrMats, outputName, from_folder, to_path):
 	# Start the processes
 	pair_queue = multiprocessing.Queue()
 	result_queue = multiprocessing.Queue()
@@ -285,8 +288,7 @@ def computeCorrelDist(corrMats, outputName, from_folder, to_folder):
 	matValList = [corrMats[mat] for mat in matList]
 	counter = 0
 	for i in corrMats:
-		data_set_name = str(i).replace(from_folder +"\\", "")
-		numpy.savetxt(to_folder +"/" + data_set_name + ".csv", corrMats[i], delimiter=",")
+		numpy.savetxt(to_path + ".csv", corrMats[i], delimiter=",")
 		print(str(list(matList)[counter]))
 		counter = counter + 1
 	pairCount = 0
@@ -1167,13 +1169,21 @@ distType ='gcd15'
 num_processes = 1
 
 
-#def main(from_folder, to_folder):
-if __name__ == "__main__":
+def main(from_folder, to_path):
+	""" Computes the embedding matrix for a given dataset.
+
+        Parameters
+        ----------
+        from_folder : str
+            Path to the location of a folder which contains a file with filename extension of .ndump2 and 
+	    a file with the .gw extension of some dataset.
+	to_path  : str
+	    Path to the location of the output file which contains the embedding matrix of the given dataset. 
+	
+		
+        """
 	# Process the program parameters
-	#ndumpFolder 	= sys.argv[1]
-	#distType		= sys.argv[2]
-	#num_processes	= int(sys.argv[3])
-	ndumpFolder = 'BuildGraphClassification'
+	ndumpFolder = from_folder
 	distType ='gcd15'
 	num_processes = 1
 	# Due to backward compatibility, map the distance type to corresponding testMode
@@ -1187,7 +1197,7 @@ if __name__ == "__main__":
 	if testMode in [7, 10, 14, 16]:
 		corrMats = getCorrelationMatrices(allIndexes, testMode)
 		print ('GCMs are ready! Computing the GCDs...'		)
-		computeCorrelDist(corrMats, os.path.join(ndumpFolder, '{0}.txt'.format(distType)), ndumpFolder, 'Matrix_classification')
+		computeCorrelDist(corrMats, os.path.join(ndumpFolder, '{0}.txt'.format(distType)), ndumpFolder, to_path)
 	
 	# Compute the spectral distances
 	elif testMode == 17:
@@ -1227,4 +1237,4 @@ if __name__ == "__main__":
 		print ('Diameters ready! Computing the distances...')
 		compareNetworkProps(diameters, 2, os.path.join(ndumpFolder, 'diameter.txt'))
 
-#main("BuildGraphClassification", "Matrix_classification")
+
