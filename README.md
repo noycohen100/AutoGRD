@@ -5,7 +5,11 @@ The paper published at CIKM 2019 conference and won the best research paper awar
 https://dl.acm.org/citation.cfm?id=3357384.3357896
 
 The order of the code:
-  1) 
+  1) RandomForestclassification
+  2) Co-occurence_computation
+  3) Orca_algorithm
+  4) Embeeding_creation
+  
 
 
 Our work is based on two external sources:
